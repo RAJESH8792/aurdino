@@ -1,0 +1,118 @@
+#include <SoftwareSerial.h>
+SoftwareSerial hc(8,9);
+#define v1 7
+#define v2 6
+#define v3 5
+#define v4 4
+#define v5 3
+int vote1=0;
+int vote2=0;
+int vote3=0;
+int vote4=0;
+
+void setup()
+{
+ hc.begin(9600);
+ pinMode(v1, INPUT);
+ pinMode(v2,INPUT);
+ pinMode(v3,INPUT);
+ pinMode(v4,INPUT);
+ pinMode(v5,INPUT);
+
+  delay(26000);
+  digitalWrite(v1, HIGH);
+  digitalWrite(v2, HIGH);
+  digitalWrite(v3, HIGH);
+  digitalWrite(v4, HIGH);
+  digitalWrite(v5, HIGH);
+Serial.begin(9600);
+}
+
+void loop()
+{
+if(digitalRead(v1)==0)
+{vote1++;
+  while(digitalRead(v1)==0);
+  delay(1000);
+}
+
+if(digitalRead(v2)==0)
+{
+  vote2++;
+  while(digitalRead(v2)==0);
+  delay(1000);
+}
+
+if(digitalRead(v3)==0)
+{
+  vote3++;
+  while(digitalRead(v3)==0)
+  delay(1000);
+}
+
+if(digitalRead(v4)==0)
+{
+vote4++;
+while(digitalRead(v4)==0);
+delay(1000 );
+}
+
+if(digitalRead(v5)==0)
+{
+int vote=vote1+vote2+vote3+vote4;
+if(vote)
+{
+if((vote1 > vote2 && vote1 > vote3 && vote1 > vote4))
+{
+hc.print("\n-------------------\n\nA WINS WITH ");
+hc.print(vote1);
+hc.print("\n\n-------------------");
+delay(5000);
+}
+else if((vote2 > vote1 && vote2 > vote3 && vote2 > vote4))
+{
+hc.print("\n-------------------\n\nB WINS WITH ");
+hc.print(vote2);
+hc.print("\n\n-------------------");
+delay(5000);
+
+}
+else if((vote3 > vote1 && vote3 > vote2 && vote3 > vote4))
+{
+hc.print("\n-------------------\n\nC WINS WITH ");
+hc.print(vote3);
+hc.print("\n\n-------------------");
+delay(5000);
+
+}
+else if(vote4 > vote1 && vote4 > vote2 && vote4 > vote3)
+{
+hc.print("\n-------------------\n\nD WINS WITH ");
+hc.print(vote4);
+hc.print("\n\n-------------------");
+
+delay(5000);
+} 
+
+else
+{
+hc.print("\n-------------------\n\nVOTES TIED\n\n-------------------");
+delay(5000);
+}
+
+}
+else
+{
+  hc.print("\n-------------------\n\nNO VOTES POLLED\n\n-------------------");
+  delay(5000);
+}
+vote1=0;
+vote2=0;
+vote3=0;
+vote4=0;
+vote=0;
+digitalWrite(12,HIGH);
+digitalWrite(13,LOW);
+}
+
+}
